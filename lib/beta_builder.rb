@@ -105,31 +105,40 @@ module BetaBuilder
       end
       
       def derived_build_dir
+        puts ""
         workspace_settings_path = File.join(workspace_path, 'xcuserdata',
                                             "#{`whoami`.strip}.xcuserdatad",
                                             'WorkspaceSettings.xcsettings')
 
+        derived_data_directory = File.join(Dir::home, "Library", "Developer", "Xcode", "DerivedData")
+        
         # Check the derived data location style
         workspace_settings = CFPropertyList.native_types(
           CFPropertyList::List.new(:file => workspace_settings_path).value)
-        derived_data_location_style = workspace_settings['IDEWorkspaceUserSettings_DerivedDataLocationStyle']
-        derived_data_directory = case derived_data_location_style
+        derived_data_location_style = workspace_settings['IDEWorkspaceUserSettings_DerivedDataLocationStyle'] || 0
+        derived_app_directory = case derived_data_location_style
           when 0 then # The standard DerivedData directory.
             workspace_name = File.basename(workspace_path, '.xcworkspace')
-            derived_data_dir = File.expand_path('~/Library/Developer/Xcode/DerivedData')
-
+            puts File.expand_path(workspace_path)
             # Look in every directory named after our workspace for the
             # info.plist that points back to our workspace.
-            Dir[File.join(derived_data_dir, "#{workspace_name}-*")].find do |d|
-              CFPropertyList.native_types(CFPropertyList::List.new(:file => "#{d}/info.plist").value)['WorkspacePath'] == workspace_path
+            Dir[File.join(derived_data_directory, "#{workspace_name}-*")].find do |current_directory|
+              plist_path = File.join(current_directory, "info.plist")
+              puts "Plist Path: #{plist_path}"
+              if File.exists? plist_path
+                list = CFPropertyList::List.new(:file => plist_path)
+                puts "Plist Wrkspc path: #{CFPropertyList.native_types(list.value)['WorkspacePath']}"
+                puts "Wrkspc Path      : #{File.join(Dir.pwd, workspace_path)}"
+                CFPropertyList.native_types(list.value)['WorkspacePath'] == File.join(Dir.pwd, workspace_path)
+              end
             end
           when 1, 2 then # We have the full path, or relative path
             workspace_settings['IDEWorkspaceUserSettings_DerivedDataCustomLocation']
           else
             raise "Unable to determine the DerivedData path. Your Workspace may be invalid or corrupted"
           end
-
-        "#{derived_data_directory}/Build/Products/"
+        puts derived_app_directory
+        File.join(derived_app_directory, "Build", "Products")
       end
       
       def built_app_dsym_path
