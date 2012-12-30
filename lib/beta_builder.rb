@@ -112,6 +112,15 @@ module BetaBuilder
       def built_app_dsym_path
         "#{built_app_path}.dSYM"
       end
+
+      def dsym_file_name
+        "#{app_file_name}.dSYM"
+      end
+      
+      def built_app_dsym_zip_path
+        "#{built_app_dsym_path}.zip"
+      end
+
       
       def ipa_path
         File.join(File.expand_path(ipa_destination_path), ipa_name)
