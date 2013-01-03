@@ -22,11 +22,10 @@ module BetaBuilder
       
       def deploy
         release_notes = get_notes
-        
-		          File.delete(@configuration.built_app_dsym_zip_path) if File.exists?(@configuration.built_app_dsym_zip_path)
-		          Zip::ZipFile.open("#{@configuration.built_app_dsym_zip_path}", Zip::ZipFile::CREATE) do |zipfile|
-		       Dir["#{@configuration.built_app_dsym_path}/**/*"].each {|f| zipfile.add(f,f)}
-		          end
+        File.delete(@configuration.built_app_dsym_zip_path) if File.exists?(@configuration.built_app_dsym_zip_path)
+		Zip::ZipFile.open("#{@configuration.built_app_dsym_zip_path}", Zip::ZipFile::CREATE) do |zipfile|
+		  Dir["#{@configuration.built_app_dsym_path}/**/*"].each {|f| zipfile.add(f,f)}
+		end
 
         payload = {
           :api_token          => @configuration.api_token,
