@@ -23,9 +23,9 @@ module BetaBuilder
       def deploy
         release_notes = get_notes
         File.delete(@configuration.built_app_dsym_zip_path) if File.exists?(@configuration.built_app_dsym_zip_path)
-		Zip::ZipFile.open("#{@configuration.built_app_dsym_zip_path}", Zip::ZipFile::CREATE) do |zipfile|
-		  Dir["#{@configuration.built_app_dsym_path}/**/*"].each {|f| zipfile.add(f,f)}
-		end
+        Zip::ZipFile.open("#{@configuration.built_app_dsym_zip_path}", Zip::ZipFile::CREATE) do |zipfile|
+          Dir["#{@configuration.built_app_dsym_path}/**/*"].each {|f| zipfile.add(f,f)}
+        end
 
         payload = {
           :api_token          => @configuration.api_token,
@@ -35,7 +35,7 @@ module BetaBuilder
           :distribution_lists => (@configuration.distribution_lists || []).join(","),
           :notify             => @configuration.notify || false,
           :replace            => @configuration.replace || false,
-	  	  :dsym               => File.new(@configuration.built_app_dsym_zip_path, 'rb')
+          :dsym               => File.new(@configuration.built_app_dsym_zip_path, 'rb')
         }
         if @configuration.verbose
           puts "ipa path: #{@configuration.ipa_path}"
