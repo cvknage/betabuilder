@@ -31,7 +31,7 @@ spec = Gem::Specification.new do |s|
 
   # If you want to depend on other gems, add them here, along with any
   # relevant versions
-  s.add_dependency("CFPropertyList", "~> 2.0.0")
+  s.add_dependency("CFPropertyList", "~> 2.2.0")
   s.add_dependency('uuid', "~> 2.3.1")
   s.add_dependency('rest-client', '~> 1.6.1')
   s.add_dependency('json')
