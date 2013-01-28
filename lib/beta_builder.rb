@@ -28,7 +28,9 @@ module BetaBuilder
         :skip_clean => ENV.fetch('SKIPCLEAN', false),
         :verbose => ENV.fetch('VERBOSE', false),
         :dry_run => ENV.fetch('DRY', false),
-        :set_version_number => false
+        :set_version_number => false,
+        :set_version_number_git => false,
+        :set_version_number_svn => false
       )
       @namespace = namespace
       yield @configuration if block_given?
@@ -65,7 +67,8 @@ module BetaBuilder
         
         args << "-configuration '#{configuration}'"
         args << "-arch '#{arch}'" unless arch.nil?
-        args << "VERSION_LONG='#{build_number_git}'" if set_version_number
+        args << "VERSION_LONG='#{build_number_git}'" if set_version_number_git
+        args << "VERSION_LONG='build-#{build_number_svn}'" if set_version_number_svn
         
         if xcodeargs
             args.concat xcodeargs if xcodeargs.is_a? Array
@@ -127,6 +130,10 @@ module BetaBuilder
       
       def build_number_git
         `git describe --tags --abbrev=1`.chop
+      end
+      
+      def build_number_svn
+        `svnversion`.chop
       end
       
       def deploy_using(strategy_name, &block)
