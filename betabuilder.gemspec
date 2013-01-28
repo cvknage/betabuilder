@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name              = "betabuilder"
-  s.version           = "0.7.5"
+  s.version           = "0.7.6"
   s.summary           = "A set of Rake tasks and utilities for managing iOS ad-hoc builds"
   s.authors           = ["Luke Redpath", "Nick Peelman"]
   s.email             = ["luke@lukeredpath.co.uk", "nick@peelman.us"]

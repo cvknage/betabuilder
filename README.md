@@ -97,7 +97,9 @@ A full list of configuration options and their details
 
 `dry_run` - (true/**false**) Don't upload to Distribution Strategy, just act like it
 
-`set_version_number` - (true/**false**) Attempts to set a version number, see below
+`set_version_number_git` - (true/**false**) Attempts to set a version number using Git, see below
+
+`set_version_number_svn` - (true/**false**) Attempts to set a version number using SVN, see below
 
 ### Configuration (Testflight)
 Testflight presents its own set of options that can be configured
@@ -168,15 +170,21 @@ BetaBuilder allows you to deploy your built package using it's extensible deploy
 
 ## Setting version numbers automatically
 
-You can use betabuilder to set a build number using Git's `describe` system.  In order for that to work, at least one `tag` must exist somewhere in the git hierarchy for the branch being built from. 
+You can use betabuilder to set a build number using Git's `describe` system or Subversion's svnversion.  In order for Git to work, at least one `tag` must exist somewhere in the git hierarchy for the branch being built from. 
 
 Also, you are required to set your `CFBundleVersion` to `${VERSION_LONG}` inside your `Info.plist`.  To accomodate manual builds, add a `VERSION_LONG` Build Setting to your app's Project, and treat it as you normally would your `Info.plist` version number.
 
-Once a tag is created and your App is configured, simply add this to your BetaBuilder config and it will use Git to generate the 
+Once a tag is created (if using Git) and your App is configured, simply add this to your BetaBuilder config and it will use Git to generate the 
 
-	config.set_version_number = true
+	config.set_version_number_svn = true
+	
+OR
 
-It will generate a version number like: `1.0-15-g6b3c1bb`. 
+	config.set_version_number_git = true
+
+It will generate a version number like: `build-3729` or `1.0-15-g6b3c1bb`. 
+
+Git Tag Details: 
 
 * *1.0* is the most recent tag
 * *15* is the number of commits since the tag was generated

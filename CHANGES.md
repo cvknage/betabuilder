@@ -1,3 +1,8 @@
+## 0.7.6
+* Allows automation of version/build number setting via SVN or Git
+* Allows inclusion of dsym file when uploading to Testflight (@Devaria)
+
+
 ## 0.7.5
 * Allows automation of version/build number setting
 * Adds full paths to xcodebuild and xcrun; they are override-able in the config
@@ -11,7 +16,6 @@
 * Fixes cases where CFPropertyList could fail to load (@svelix)
 * Uses relative paths for requires (@smtlaissezfaire)
 * Raises an exception if the build fails (@epall)
-
 
 ## 0.7.4.1
 * Allow auto-archiving from other Rake namespaces (@victor)
