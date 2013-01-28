@@ -21,6 +21,9 @@ module BetaBuilder
       end
       
       def deploy
+        if (@configuration.ask_to_notify)
+          @configuration.notify = get_notify
+        end
         release_notes = get_notes
         File.delete(@configuration.built_app_dsym_zip_path) if File.exists?(@configuration.built_app_dsym_zip_path)
         Zip::ZipFile.open("#{@configuration.built_app_dsym_zip_path}", Zip::ZipFile::CREATE) do |zipfile|
@@ -64,6 +67,26 @@ module BetaBuilder
       end
       
       private
+      
+      def get_notify
+        if ( @configuration.notify )
+      	  puts "Notify users of release. [Y/n]"
+      	else
+      	  puts "Notify users of release. [y/N]"
+      	end
+      	s = STDIN.gets.chop
+      	  
+      	if ( s.casecmp("n") == 0 || s.casecmp("no") == 0 )
+      	  return false
+      	elsif ( s.casecmp("y") == 0 || s.casecmp("yes") == 0 )
+      	  return true
+      	elsif ( s.casecmp("") == 0 || s == nil )
+      	  return @configuration.notify
+      	else
+    	  puts "Please answer yes or no."
+          return get_notify      	   
+      	end      	  
+      end
       
       def get_notes
         notes = @configuration.release_notes_text

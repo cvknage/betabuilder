@@ -110,6 +110,8 @@ Testflight presents its own set of options that can be configured
 
 `notify` - (true/**false**) Notify the distribution list of this build
 
+`ask_to_notify` - (true/**false**) Asks during the upload if the distribution list should be notified of this build, uses ‘notify’ as default value.
+
 `replace` - (true/**false**) Replace if an existing build exists with the same ID and version
 
 ### Configuration (Web)
