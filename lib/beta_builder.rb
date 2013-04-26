@@ -172,9 +172,7 @@ module BetaBuilder
           if @configuration.auto_archive
             Rake::Task["#{@namespace}:archive"].invoke
           end
-          print "Packaging and Signing..."          
-          raise "** PACKAGE FAILED ** No Signing Identity Found" unless @configuration.signing_identity
-          raise "** PACKAGE FAILED ** No Provisioning Profile Found" unless @configuration.provisioning_profile
+          print "Packaging and Signing..."
           
           # Construct the IPA and Sign it
           cmd = []
@@ -183,8 +181,6 @@ module BetaBuilder
           cmd << "PackageApplication"
           cmd << "-v '#{@configuration.built_app_path}'"
           cmd << "-o '#{@configuration.ipa_path}'"
-          cmd << "--sign '#{@configuration.signing_identity}'"
-          cmd << "--embed '#{@configuration.provisioning_profile}'"
           if @configuration.packageargs
             cmd.concat @configuration.packageargs if @configuration.packageargs.is_a? Array
             cmd << @configuration.packageargs if @configuration.packageargs.is_a? String

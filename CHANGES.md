@@ -1,3 +1,6 @@
+## 0.7.7
+* Removed some lines of code that always rose exceptions as theis conditions where never met
+
 ## 0.7.6
 * Allows automation of version/build number setting via SVN or Git
 * Allows inclusion of dsym file when uploading to Testflight (@Devaria)
